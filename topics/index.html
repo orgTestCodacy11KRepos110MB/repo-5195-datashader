@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="Docutils 0.17.1: http://docutils.sourceforge.net/" name="generator"/>
+<title>Topics — Datashader v0.14.3</title>
+<!-- Loaded before other Sphinx assets -->
+<link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet"/>
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet"/>
+<link href="../_static/vendor/fontawesome/5.13.0/css/all.min.css" rel="stylesheet"/>
+<link as="font" crossorigin="" href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2" rel="preload" type="font/woff2"/>
+<link href="../_static/pygments.css" rel="stylesheet" type="text/css">
+<link href="../_static/togglebutton.css" rel="stylesheet" type="text/css">
+<link href="../_static/mystnb.css" rel="stylesheet" type="text/css">
+<link href="../_static/graphviz.css" rel="stylesheet" type="text/css">
+<link href="../_static/copybutton.css" rel="stylesheet" type="text/css">
+<link href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" rel="stylesheet" type="text/css"/>
+<link href="../_static/nbsite.css" rel="stylesheet" type="text/css"/>
+<link href="../_static/css/custom.css" rel="stylesheet" type="text/css"/>
+<!-- Pre-loaded scripts that we'll load fully later -->
+<link as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf" rel="preload"/>
+<script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+<script src="../_static/jquery.js"></script>
+<script src="../_static/underscore.js"></script>
+<script src="../_static/doctools.js"></script>
+<script src="../_static/clipboard.min.js"></script>
+<script src="../_static/copybutton.js"></script>
+<script>let toggleHintShow = 'Click to show';</script>
+<script>let toggleHintHide = 'Click to hide';</script>
+<script>let toggleOpenOnPrint = 'true';</script>
+<script src="../_static/togglebutton.js"></script>
+<script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+<script src="../_static/design-tabs.js"></script>
+<link href="../_static/favicon.ico" rel="shortcut icon">
+<link href="../about.html" rel="author" title="About these documents"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../releases.html" rel="next" title="Releases"/>
+<link href="../user_guide/Geography.html" rel="prev" title="Geography"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="None" name="docsearch:language"/>
+<!-- Google Analytics -->
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-154795830-1', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+</link></link></link></link></link></link></head>
+<body data-offset="60" data-spy="scroll" data-target="#bd-toc-nav">
+<div class="container-fluid" id="banner"></div>
+<nav class="navbar navbar-dark navbar-expand-lg bg-dark fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+<div id="navbar-start">
+<a class="navbar-brand" href="../index.html">
+<img alt="logo" class="logo" src="../_static/logo_horizontal.svg"/>
+</a>
+</div>
+<button aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar-collapsible" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="col-lg-9 collapse navbar-collapse" id="navbar-collapsible">
+<div class="mr-auto" id="navbar-center">
+<div class="navbar-center-item">
+<ul class="navbar-nav" id="navbar-main-elements">
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../index.html">
+  Introduction
+ </a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../getting_started/index.html">
+  Getting Started
+ </a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../user_guide/index.html">
+  User Guide
+ </a>
+</li>
+<li class="toctree-l1 current active nav-item">
+<a class="current reference internal nav-link" href="#">
+  Topics
+ </a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../releases.html">
+  Releases
+ </a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../api.html">
+  API
+ </a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../FAQ.html">
+  FAQ
+ </a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../about.html">
+  About
+ </a>
+</li>
+</ul>
+</div>
+</div>
+<div id="navbar-end">
+<div class="navbar-end-item">
+<ul aria-label="Icon Links" class="navbar-nav" id="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link" href="https://github.com/holoviz/datashader" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+<label class="sr-only">GitHub</label></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="https://twitter.com/datashader" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+<label class="sr-only">Twitter</label></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="https://discourse.holoviz.org/c/datashader/" rel="noopener" target="_blank" title="Discourse"><span><i class="fab fa-discourse"></i></span>
+<label class="sr-only">Discourse</label></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="https://holoviz.org/" rel="noopener" target="_blank" title="HoloViz"><img alt="HoloViz" class="icon-link-image" src="../_static/holoviz-icon-white.svg"/></a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<div class="container-xl">
+<div class="row">
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="col-12 col-md-2 bd-sidebar"><form action="../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="icon fas fa-search"></i>
+<input aria-label="Search the docs ..." autocomplete="off" class="form-control" id="search-input" name="q" placeholder="Search the docs ..." type="search"/>
+</form><nav aria-label="Main navigation" class="bd-links" id="bd-docs-nav">
+<div class="bd-toc-item active">
+<ul class="nav bd-sidenav">
+<li class="toctree-l1">
+<a class="reference external" href="https://examples.pyviz.org/census/census.html">
+   Census
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference external" href="https://examples.pyviz.org/gerrymandering/gerrymandering.html">
+   Gerrymandering
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference external" href="https://examples.pyviz.org/landsat/landsat.html">
+   Landsat
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference external" href="https://examples.pyviz.org/network_packets/network_packets.html">
+   Network Packets
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference external" href="https://examples.pyviz.org/nyc_taxi/nyc_taxi-nongeo.html">
+   NYC Taxi
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference external" href="https://examples.pyviz.org/opensky/opensky.html">
+   OpenSky
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference external" href="https://examples.pyviz.org/osm/osm-1billion.html">
+   OSM 1 Billion
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference external" href="https://examples.pyviz.org/osm/osm-3billion.html">
+   OSM
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference external" href="https://examples.pyviz.org/datashader_dashboard/dashboard.html">
+   Dashboard
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference external" href="https://examples.pyviz.org/attractors/attractors.html">
+   Strange attractors
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference external" href="https://examples.pyviz.org/bay_trimesh/bay_trimesh.html">
+   Bay Trimesh
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference external" href="https://anaconda.org/defusco/amz_centers/notebook">
+   Amazon.com center distance
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference external" href="https://examples.pyviz.org/uk_researchers/uk_researchers.html">
+   UK Researchers
+  </a>
+</li>
+</ul>
+</div>
+</nav>
+</div>
+<div class="d-none d-xl-block col-xl-2 bd-toc">
+<div class="toc-item">
+<nav id="bd-toc-nav">
+</nav>
+</div>
+<div class="toc-item">
+</div>
+</div>
+<main class="col-12 col-md-10 col-xl-8 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+<div>
+<section id="topics">
+<h1>Topics<a class="headerlink" href="#topics" title="Permalink to this headline">#</a></h1>
+<p>Examples of what can be done with Datashader.</p>
+<p>To learn how to use Datashader, see the <a class="reference external" href="../getting_started/index.html">Getting Started Guide</a>.</p>
+<p>Detailed documentation is contained in the <a class="reference external" href="../user_guide/index.html">User Guide</a>.</p>
+<p>NOTE: This is a list of links to examples on external sites. Most
+examples are on <a class="reference external" href="https://examples.pyviz.org">https://examples.pyviz.org</a>.</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><a class="reference external" href="https://examples.pyviz.org/census/census.html">Census</a></div>
+<div class="line">Population and racial data from the 2010 US Census visualized as
+scatter points.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><a class="reference external" href="https://examples.pyviz.org/gerrymandering/gerrymandering.html">Gerrymandering</a></div>
+<div class="line">US Congressional boundaries overlaid on 2010 US Census data.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><a class="reference external" href="https://examples.pyviz.org/landsat/landsat.html">Landsat</a></div>
+<div class="line">Hyperspectral satellite imaging data from Landsat8 visualized as
+rasters.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><a class="reference external" href="https://examples.pyviz.org/network_packets/network_packets.html">Network Packets</a></div>
+<div class="line">PCAP network traffic data visualized as network graphs.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><a class="reference external" href="https://examples.pyviz.org/nyc_taxi/nyc_taxi.html">NYC Taxi</a></div>
+<div class="line">NYC Taxi data visualized as points, curves, and bars. Uses trip
+data originally from the <a class="reference external" href="http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml">NYC Taxi dataset</a> but preprocessed using
+<code class="docutils literal notranslate"><span class="pre">taxi_preprocessing_example.py</span></code> for convenience.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><a class="reference external" href="https://examples.pyviz.org/opensky/opensky.html">OpenSky</a></div>
+<div class="line">OpenSky airplane trajectories visualized as points.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><a class="reference external" href="https://examples.pyviz.org/osm/osm-1billion.html">OSM 1 Billion</a></div>
+<div class="line">1-billion-point OpenStreetMap dataset visualized as points on a
+laptop, in memory.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><a class="reference external" href="https://examples.pyviz.org/osm/osm-3billion.html">OSM</a></div>
+<div class="line">2.7-billion-point OpenStreetMap dataset visualized as points on a
+laptop, out of core.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><a class="reference external" href="https://examples.pyviz.org/datashader_dashboard/dashboard.html">Dashboard</a></div>
+<div class="line">30-line dashboard for datashader plots based on the <a class="reference external" href="http://panel.pyviz.org">Panel</a>
+library.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><a class="reference external" href="https://examples.pyviz.org/attractors/attractors.html">Strange attractors</a></div>
+<div class="line">Visualizing attractor trajectories for various iterative equations.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><a class="reference external" href="https://examples.pyviz.org/bay_trimesh/bay_trimesh.html">Bay Trimesh</a></div>
+<div class="line">Rendering a triangular mesh of water depths in the Chesapeake and
+Delaware bay areas.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><a class="reference external" href="https://anaconda.org/defusco/amz_centers/notebook">Amazon.com center distance</a></div>
+<div class="line">Cities in the USA colored by their distance to the nearest
+Amazon.com distribution center.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><a class="reference external" href="https://examples.pyviz.org/uk_researchers/uk_researchers.html">UK Researchers</a></div>
+<div class="line">Network graph of collaborations between UK researchers.</div>
+</div>
+</li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</div>
+<!-- Previous / next buttons -->
+<div class="prev-next-area">
+<a class="left-prev" href="../user_guide/Geography.html" id="prev-link" title="previous page">
+<i class="fas fa-angle-left"></i>
+<div class="prev-next-info">
+<p class="prev-next-subtitle">previous</p>
+<p class="prev-next-title">Geography</p>
+</div>
+</a>
+<a class="right-next" href="../releases.html" id="next-link" title="next page">
+<div class="prev-next-info">
+<p class="prev-next-subtitle">next</p>
+<p class="prev-next-title">Releases</p>
+</div>
+<i class="fas fa-angle-right"></i>
+</a>
+</div>
+</main>
+</div>
+</div>
+<!-- Scripts loaded after <body> so the DOM is not blocked -->
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+<div class="container">
+<div class="footer-item">
+<p class="nbsite-copyright-last-updated">
+<span class="copyright">
+            © Copyright 2016-2022 Holoviz contributors.
+    </span>
+<span class="last-updated">Last updated on 2022-11-22.</span><br/>
+</p>
+</div>
+</div>
+</footer>
+</body>
+</html>

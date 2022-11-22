@@ -1,0 +1,1382 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>datashader.reductions — Datashader v0.14.3</title>
+<!-- Loaded before other Sphinx assets -->
+<link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet"/>
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet"/>
+<link href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css" rel="stylesheet"/>
+<link as="font" crossorigin="" href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2" rel="preload" type="font/woff2"/>
+<link href="../../_static/pygments.css" rel="stylesheet" type="text/css">
+<link href="../../_static/togglebutton.css" rel="stylesheet" type="text/css">
+<link href="../../_static/mystnb.css" rel="stylesheet" type="text/css">
+<link href="../../_static/graphviz.css" rel="stylesheet" type="text/css">
+<link href="../../_static/copybutton.css" rel="stylesheet" type="text/css">
+<link href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" rel="stylesheet" type="text/css"/>
+<link href="../../_static/nbsite.css" rel="stylesheet" type="text/css"/>
+<link href="../../_static/css/custom.css" rel="stylesheet" type="text/css"/>
+<!-- Pre-loaded scripts that we'll load fully later -->
+<link as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf" rel="preload"/>
+<script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+<script src="../../_static/jquery.js"></script>
+<script src="../../_static/underscore.js"></script>
+<script src="../../_static/doctools.js"></script>
+<script src="../../_static/clipboard.min.js"></script>
+<script src="../../_static/copybutton.js"></script>
+<script>let toggleHintShow = 'Click to show';</script>
+<script>let toggleHintHide = 'Click to hide';</script>
+<script>let toggleOpenOnPrint = 'true';</script>
+<script src="../../_static/togglebutton.js"></script>
+<script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+<script src="../../_static/design-tabs.js"></script>
+<link href="../../_static/favicon.ico" rel="shortcut icon">
+<link href="../../about.html" rel="author" title="About these documents"/>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="None" name="docsearch:language"/>
+<!-- Google Analytics -->
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-154795830-1', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+</link></link></link></link></link></link></head>
+<body data-offset="60" data-spy="scroll" data-target="#bd-toc-nav">
+<div class="container-fluid" id="banner"></div>
+<nav class="navbar navbar-dark navbar-expand-lg bg-dark fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+<div id="navbar-start">
+<a class="navbar-brand" href="../../index.html">
+<img alt="logo" class="logo" src="../../_static/logo_horizontal.svg"/>
+</a>
+</div>
+<button aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar-collapsible" data-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="col-lg-9 collapse navbar-collapse" id="navbar-collapsible">
+<div class="mr-auto" id="navbar-center">
+<div class="navbar-center-item">
+<ul class="navbar-nav" id="navbar-main-elements">
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../../index.html">
+  Introduction
+ </a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../../getting_started/index.html">
+  Getting Started
+ </a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../../user_guide/index.html">
+  User Guide
+ </a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../../topics/index.html">
+  Topics
+ </a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../../releases.html">
+  Releases
+ </a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../../api.html">
+  API
+ </a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../../FAQ.html">
+  FAQ
+ </a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="../../about.html">
+  About
+ </a>
+</li>
+</ul>
+</div>
+</div>
+<div id="navbar-end">
+<div class="navbar-end-item">
+<ul aria-label="Icon Links" class="navbar-nav" id="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link" href="https://github.com/holoviz/datashader" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+<label class="sr-only">GitHub</label></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="https://twitter.com/datashader" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+<label class="sr-only">Twitter</label></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="https://discourse.holoviz.org/c/datashader/" rel="noopener" target="_blank" title="Discourse"><span><i class="fab fa-discourse"></i></span>
+<label class="sr-only">Discourse</label></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="https://holoviz.org/" rel="noopener" target="_blank" title="HoloViz"><img alt="HoloViz" class="icon-link-image" src="../../_static/holoviz-icon-white.svg"/></a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<div class="container-xl">
+<div class="row">
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="col-12 col-md-2 bd-sidebar"><form action="../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="icon fas fa-search"></i>
+<input aria-label="Search the docs ..." autocomplete="off" class="form-control" id="search-input" name="q" placeholder="Search the docs ..." type="search"/>
+</form><nav aria-label="Main navigation" class="bd-links" id="bd-docs-nav">
+<div class="bd-toc-item active">
+</div>
+</nav>
+</div>
+<div class="d-none d-xl-block col-xl-2 bd-toc">
+</div>
+<main class="col-12 col-md-10 col-xl-8 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+<div>
+<h1>Source code for datashader.reductions</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">packaging.version</span> <span class="kn">import</span> <span class="n">Version</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">datashape</span> <span class="kn">import</span> <span class="n">dshape</span><span class="p">,</span> <span class="n">isnumeric</span><span class="p">,</span> <span class="n">Record</span><span class="p">,</span> <span class="n">Option</span>
+<span class="kn">from</span> <span class="nn">datashape</span> <span class="kn">import</span> <span class="n">coretypes</span> <span class="k">as</span> <span class="n">ct</span>
+<span class="kn">from</span> <span class="nn">toolz</span> <span class="kn">import</span> <span class="n">concat</span><span class="p">,</span> <span class="n">unique</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="kn">from</span> <span class="nn">datashader.enums</span> <span class="kn">import</span> <span class="n">AntialiasCombination</span>
+<span class="kn">from</span> <span class="nn">datashader.utils</span> <span class="kn">import</span> <span class="n">isnull</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">cuda</span> <span class="k">as</span> <span class="n">nb_cuda</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">datashader.transfer_functions._cuda_utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">cuda_atomic_nanmin</span><span class="p">,</span>
+                                                           <span class="n">cuda_atomic_nanmax</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">cuda_atomic_nanmin</span><span class="p">,</span> <span class="n">cuda_atomic_nanmmax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">cudf</span>
+    <span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+    <span class="n">cudf</span> <span class="o">=</span> <span class="n">cp</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">Expr</span><span class="p">,</span> <span class="n">ngjit</span><span class="p">,</span> <span class="n">nansum_missing</span><span class="p">,</span> <span class="n">nanmax_in_place</span><span class="p">,</span> <span class="n">nansum_in_place</span>
+
+
+<span class="k">class</span> <span class="nc">Preprocess</span><span class="p">(</span><span class="n">Expr</span><span class="p">):</span>
+    <span class="sd">"""Base clase for preprocessing steps."""</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="o">=</span> <span class="n">column</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">,)</span>
+
+
+<span class="k">class</span> <span class="nc">extract</span><span class="p">(</span><span class="n">Preprocess</span><span class="p">):</span>
+    <span class="sd">"""Extract a column from a dataframe as a numpy array of values."""</span>
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cudf</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cudf</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s1">'f'</span><span class="p">:</span>
+                <span class="n">nullval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">nullval</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">Version</span><span class="p">(</span><span class="n">cudf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">Version</span><span class="p">(</span><span class="s2">"22.02"</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">to_cupy</span><span class="p">(</span><span class="n">na_value</span><span class="o">=</span><span class="n">nullval</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">cp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">to_gpu_array</span><span class="p">(</span><span class="n">fillna</span><span class="o">=</span><span class="n">nullval</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+            <span class="c1"># DataArray could be backed by numpy or cupy array</span>
+            <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="k">class</span> <span class="nc">CategoryPreprocess</span><span class="p">(</span><span class="n">Preprocess</span><span class="p">):</span>
+    <span class="sd">"""Base class for categorizing preprocessors."""</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cat_column</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Returns name of categorized column"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span>
+
+    <span class="k">def</span> <span class="nf">categories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dshape</span><span class="p">):</span>
+        <span class="sd">"""Returns list of categories corresponding to input shape"""</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"categories not implemented"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">):</span>
+        <span class="sd">"""Validates input shape"""</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"validate not implemented"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+        <span class="sd">"""Applies preprocessor to DataFrame and returns array"""</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"apply not implemented"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">category_codes</span><span class="p">(</span><span class="n">CategoryPreprocess</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Extract just the category codes from a categorical column.</span>
+
+<span class="sd">    To create a new type of categorizer, derive a subclass from this</span>
+<span class="sd">    class or one of its subclasses, implementing ``__init__``,</span>
+<span class="sd">    ``_hashable_inputs``, ``categories``, ``validate``, and ``apply``.</span>
+
+<span class="sd">    See the implementation of ``category_modulo`` in ``reductions.py``</span>
+<span class="sd">    for an example.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">categories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dshape</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">input_dshape</span><span class="o">.</span><span class="n">measure</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">categories</span>
+
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="ow">in</span> <span class="n">in_dshape</span><span class="o">.</span><span class="n">dict</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"specified column not found"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">in_dshape</span><span class="o">.</span><span class="n">measure</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">],</span> <span class="n">ct</span><span class="o">.</span><span class="n">Categorical</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"input must be categorical"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cudf</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cudf</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">Version</span><span class="p">(</span><span class="n">cudf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">Version</span><span class="p">(</span><span class="s2">"22.02"</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">to_cupy</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">to_gpu_array</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">values</span>
+
+<span class="k">class</span> <span class="nc">category_modulo</span><span class="p">(</span><span class="n">category_codes</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    A variation on category_codes that assigns categories using an integer column, modulo a base.</span>
+<span class="sd">    Category is computed as (column_value - offset)%modulo.</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># couldn't find anything in the datashape docs about how to check if a CType is an integer, so just define a big set</span>
+    <span class="n">IntegerTypes</span> <span class="o">=</span> <span class="p">{</span><span class="n">ct</span><span class="o">.</span><span class="n">bool_</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">uint16</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">uint32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">uint64</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">int16</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">int64</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">modulo</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modulo</span> <span class="o">=</span> <span class="n">modulo</span>
+
+    <span class="k">def</span> <span class="nf">_hashable_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_hashable_inputs</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">modulo</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">categories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modulo</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="ow">in</span> <span class="n">in_dshape</span><span class="o">.</span><span class="n">dict</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"specified column not found"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">in_dshape</span><span class="o">.</span><span class="n">measure</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">IntegerTypes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"input must be an integer column"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">modulo</span>
+        <span class="k">if</span> <span class="n">cudf</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cudf</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">Version</span><span class="p">(</span><span class="n">cudf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">Version</span><span class="p">(</span><span class="s2">"22.02"</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">to_cupy</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">to_gpu_array</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span>
+
+<span class="k">class</span> <span class="nc">category_binning</span><span class="p">(</span><span class="n">category_modulo</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    A variation on category_codes that assigns categories by binning a continuous-valued column.</span>
+<span class="sd">    The number of categories returned is always nbins+1.</span>
+<span class="sd">    The last category (nbin) is for NaNs in the data column, as well as for values under/over the binned</span>
+<span class="sd">    interval (when include_under or include_over is False).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column:   column to use</span>
+<span class="sd">    lower:    lower bound of first bin</span>
+<span class="sd">    upper:    upper bound of last bin</span>
+<span class="sd">    nbins:     number of bins</span>
+<span class="sd">    include_under: if True, values below bin 0 are assigned to category 0</span>
+<span class="sd">    include_over:  if True, values above the last bin (nbins-1) are assigned to category nbin-1</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">nbins</span><span class="p">,</span> <span class="n">include_under</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_over</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># +1 category for NaNs and clipped values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bin0</span> <span class="o">=</span> <span class="n">lower</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binsize</span> <span class="o">=</span> <span class="p">(</span><span class="n">upper</span> <span class="o">-</span> <span class="n">lower</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">nbins</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nbins</span> <span class="o">=</span> <span class="n">nbins</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bin_under</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">include_under</span> <span class="k">else</span> <span class="n">nbins</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bin_over</span>  <span class="o">=</span> <span class="n">nbins</span><span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">include_over</span> <span class="k">else</span> <span class="n">nbins</span>
+
+    <span class="k">def</span> <span class="nf">_hashable_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_hashable_inputs</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bin0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">binsize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_under</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_over</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="ow">in</span> <span class="n">in_dshape</span><span class="o">.</span><span class="n">dict</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"specified column not found"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cudf</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cudf</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">Version</span><span class="p">(</span><span class="n">cudf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">Version</span><span class="p">(</span><span class="s2">"22.02"</span><span class="p">):</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">to_cupy</span><span class="p">(</span><span class="n">na_value</span><span class="o">=</span><span class="n">cp</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">to_gpu_array</span><span class="p">(</span><span class="n">fillna</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="n">nan_values</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+            <span class="n">nan_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+        <span class="n">index</span> <span class="o">=</span> <span class="p">((</span><span class="n">values</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin0</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">binsize</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">index</span><span class="p">[</span><span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_under</span>
+        <span class="n">index</span><span class="p">[</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbins</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_over</span>
+        <span class="n">index</span><span class="p">[</span><span class="n">nan_values</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbins</span>
+        <span class="k">return</span> <span class="n">index</span>
+
+
+<span class="k">class</span> <span class="nc">category_values</span><span class="p">(</span><span class="n">CategoryPreprocess</span><span class="p">):</span>
+    <span class="sd">"""Extract a category and a value column from a dataframe as (2,N) numpy array of values."""</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">categorizer</span><span class="p">,</span> <span class="n">value_column</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">value_column</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span> <span class="o">=</span> <span class="n">categorizer</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="o">.</span><span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cat_column</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Returns name of categorized column"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="o">.</span><span class="n">column</span>
+
+    <span class="k">def</span> <span class="nf">categories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dshape</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="o">.</span><span class="n">categories</span>
+
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">in_dshape</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cudf</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cudf</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="kn">import</span> <span class="nn">cupy</span>
+            <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s1">'f'</span><span class="p">:</span>
+                <span class="n">nullval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">nullval</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">cupy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">Version</span><span class="p">(</span><span class="n">cudf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">Version</span><span class="p">(</span><span class="s2">"22.02"</span><span class="p">):</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">to_cupy</span><span class="p">(</span><span class="n">na_value</span><span class="o">=</span><span class="n">nullval</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">cupy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">nullval</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">cupy</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Reduction</span><span class="p">(</span><span class="n">Expr</span><span class="p">):</span>
+    <span class="sd">"""Base class for per-bin reductions."""</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="o">=</span> <span class="n">column</span>
+
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="ow">in</span> <span class="n">in_dshape</span><span class="o">.</span><span class="n">dict</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"specified column not found"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnumeric</span><span class="p">(</span><span class="n">in_dshape</span><span class="o">.</span><span class="n">measure</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"input must be numeric"</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">extract</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">),)</span>
+
+    <span class="k">def</span> <span class="nf">_antialias_requires_2_stages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Return True if this Reduction must be processed with 2 stages,</span>
+        <span class="c1"># False if it doesn't matter.</span>
+        <span class="c1"># Overridden in derived classes as appropriate.</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_antialias_stage_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="c1"># Only called if using antialiased lines. Overridden in derived classes.</span>
+        <span class="c1"># Returns a tuple containing an item for each constituent reduction.</span>
+        <span class="c1"># Each item is (AntialiasCombination, zero_value)).</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">._antialias_stage_2 is not defined"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_bases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="nf">_build_temps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">required_dshape</span><span class="p">):</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">required_dshape</span><span class="o">.</span><span class="n">measure</span><span class="p">,</span> <span class="s2">"fields"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">required_dshape</span><span class="o">.</span><span class="n">measure</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># If more than one field then they all have the same dtype so can just take the first.</span>
+            <span class="n">first_field</span> <span class="o">=</span> <span class="n">required_dshape</span><span class="o">.</span><span class="n">measure</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">required_dshape</span> <span class="o">=</span> <span class="n">dshape</span><span class="p">(</span><span class="n">first_field</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">required_dshape</span><span class="p">,</span> <span class="n">Option</span><span class="p">):</span>
+            <span class="n">required_dshape</span> <span class="o">=</span> <span class="n">dshape</span><span class="p">(</span><span class="n">required_dshape</span><span class="o">.</span><span class="n">ty</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">required_dshape</span> <span class="o">==</span> <span class="n">dshape</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">bool_</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_bool</span>
+        <span class="k">elif</span> <span class="n">required_dshape</span> <span class="o">==</span> <span class="n">dshape</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">float32</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_float32_nan</span>
+        <span class="k">elif</span> <span class="n">required_dshape</span> <span class="o">==</span> <span class="n">dshape</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">float64</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_float64_nan</span>
+        <span class="k">elif</span> <span class="n">required_dshape</span> <span class="o">==</span> <span class="n">dshape</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">uint32</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_uint32</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unexpected dshape </span><span class="si">{</span><span class="n">dshape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dshape</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">cuda</span><span class="p">,</span> <span class="n">antialias</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">antialias</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_no_field_antialias_cuda</span>
+            <span class="k">elif</span> <span class="n">antialias</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_antialias_cuda</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_no_field_cuda</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_cuda</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">antialias</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_no_field_antialias</span>
+            <span class="k">elif</span> <span class="n">antialias</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_antialias</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_no_field</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append</span>
+
+    <span class="k">def</span> <span class="nf">_build_combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dshape</span><span class="p">,</span> <span class="n">antialias</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_combine</span>
+
+    <span class="k">def</span> <span class="nf">_build_finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dshape</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finalize</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_create_bool</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">array_module</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'bool'</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_create_float32_nan</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">array_module</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">array_module</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f4'</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_create_float64_nan</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">array_module</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">array_module</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_create_float64_empty</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">array_module</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_create_float64_zero</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">array_module</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_create_uint32</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">array_module</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'u4'</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">OptionalFieldReduction</span><span class="p">(</span><span class="n">Reduction</span><span class="p">):</span>
+    <span class="sd">"""Base class for things like ``count`` or ``any`` for which the field is optional"""</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="o">=</span> <span class="n">column</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">extract</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">),)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_finalize</span><span class="p">(</span><span class="n">bases</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">bases</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">SelfIntersectingOptionalFieldReduction</span><span class="p">(</span><span class="n">OptionalFieldReduction</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Base class for optional field reductions for which self-intersecting</span>
+<span class="sd">    geometry may or may not be desireable.</span>
+<span class="sd">    Ignored if not using antialiasing.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">self_intersect</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">self_intersect</span> <span class="o">=</span> <span class="n">self_intersect</span>
+
+    <span class="k">def</span> <span class="nf">_antialias_requires_2_stages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">self_intersect</span>
+
+    <span class="k">def</span> <span class="nf">_build_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dshape</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">cuda</span><span class="p">,</span> <span class="n">antialias</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">antialias</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">self_intersect</span><span class="p">:</span>
+            <span class="c1"># append functions specific to antialiased lines without self_intersect</span>
+            <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_no_field_antialias_cuda_not_self_intersect</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_antialias_cuda_not_self_intersect</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_no_field_antialias_not_self_intersect</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_antialias_not_self_intersect</span>
+
+        <span class="c1"># Fall back to base class implementation</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_build_append</span><span class="p">(</span><span class="n">dshape</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">cuda</span><span class="p">,</span> <span class="n">antialias</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_hashable_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Reductions with different self_intersect attributes much have different hashes otherwise</span>
+        <span class="c1"># toolz.memoize will treat them as the same to give incorrect results.</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_hashable_inputs</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">self_intersect</span><span class="p">,)</span>
+
+
+<div class="viewcode-block" id="count"><a class="viewcode-back" href="../../api.html#datashader.reductions.count">[docs]</a><span class="k">class</span> <span class="nc">count</span><span class="p">(</span><span class="n">SelfIntersectingOptionalFieldReduction</span><span class="p">):</span>
+    <span class="sd">"""Count elements in each bin, returning the result as a uint32, or a</span>
+<span class="sd">    float32 if using antialiasing.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str, optional</span>
+<span class="sd">        If provided, only counts elements in ``column`` that are not ``NaN``.</span>
+<span class="sd">        Otherwise, counts every element.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">out_dshape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">,</span> <span class="n">antialias</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">dshape</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="k">if</span> <span class="n">antialias</span> <span class="k">else</span> <span class="n">dshape</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_antialias_stage_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">self_intersect</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">((</span><span class="n">AntialiasCombination</span><span class="o">.</span><span class="n">SUM_1AGG</span><span class="p">,</span> <span class="n">array_module</span><span class="o">.</span><span class="n">nan</span><span class="p">),)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">((</span><span class="n">AntialiasCombination</span><span class="o">.</span><span class="n">SUM_2AGG</span><span class="p">,</span> <span class="n">array_module</span><span class="o">.</span><span class="n">nan</span><span class="p">),)</span>
+
+    <span class="c1"># CPU append functions</span>
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_antialias</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]):</span>
+                <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">aa_factor</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">+=</span> <span class="n">aa_factor</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_antialias_not_self_intersect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span> <span class="ow">or</span> <span class="n">aa_factor</span> <span class="o">&gt;</span> <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]:</span>
+                <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">aa_factor</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_no_field</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">):</span>
+        <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_no_field_antialias</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]):</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">aa_factor</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">+=</span> <span class="n">aa_factor</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_no_field_antialias_not_self_intersect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span> <span class="ow">or</span> <span class="n">aa_factor</span> <span class="o">&gt;</span> <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]:</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">aa_factor</span>
+
+    <span class="c1"># GPU append functions</span>
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@nb_cuda</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_append_antialias_cuda</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="n">cuda_atomic_nanmax</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">field</span><span class="o">*</span><span class="n">aa_factor</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@nb_cuda</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_append_no_field_antialias_cuda_not_self_intersect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="n">cuda_atomic_nanmax</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">aa_factor</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@nb_cuda</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_append_cuda</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+            <span class="n">nb_cuda</span><span class="o">.</span><span class="n">atomic</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@nb_cuda</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_append_no_field_antialias_cuda</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="n">cuda_atomic_nanmax</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">aa_factor</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@nb_cuda</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_append_no_field_cuda</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">):</span>
+        <span class="n">nb_cuda</span><span class="o">.</span><span class="n">atomic</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dshape</span><span class="p">,</span> <span class="n">antialias</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">antialias</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_combine_antialias</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_combine</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_combine</span><span class="p">(</span><span class="n">aggs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">aggs</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'u4'</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_combine_antialias</span><span class="p">(</span><span class="n">aggs</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">aggs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">aggs</span><span class="p">)):</span>
+            <span class="n">nansum_in_place</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">aggs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+
+<span class="k">class</span> <span class="nc">by</span><span class="p">(</span><span class="n">Reduction</span><span class="p">):</span>
+    <span class="sd">"""Apply the provided reduction separately per category.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cats: str or CategoryPreprocess instance</span>
+<span class="sd">        Name of column to aggregate over, or a categorizer object that returns categories.</span>
+<span class="sd">        Resulting aggregate has an outer dimension axis along the categories present.</span>
+<span class="sd">    reduction : Reduction</span>
+<span class="sd">        Per-category reduction function.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cat_column</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="n">count</span><span class="p">()):</span>
+        <span class="c1"># set basic categorizer</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cat_column</span><span class="p">,</span> <span class="n">CategoryPreprocess</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span> <span class="o">=</span> <span class="n">cat_column</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cat_column</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span> <span class="o">=</span> <span class="n">category_codes</span><span class="p">(</span><span class="n">cat_column</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"first argument must be a column name or a CategoryPreprocess instance"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="o">.</span><span class="n">column</span> <span class="c1"># for backwards compatibility with count_cat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="o">.</span><span class="n">column</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">reduction</span><span class="p">,</span> <span class="s1">'column'</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span> <span class="o">=</span> <span class="n">reduction</span>
+        <span class="c1"># if a value column is supplied, set category_values preprocessor</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_column</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span> <span class="o">=</span> <span class="n">category_values</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_column</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hashable_inputs</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="o">.</span><span class="n">_hashable_inputs</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_build_temps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">by</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="p">,</span> <span class="n">tmp</span><span class="p">)</span> <span class="k">for</span> <span class="n">tmp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="o">.</span><span class="n">_build_temps</span><span class="p">(</span><span class="n">cuda</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cat_column</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">val_column</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">in_dshape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">in_dshape</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">out_dshape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dshape</span><span class="p">,</span> <span class="n">antialias</span><span class="p">):</span>
+        <span class="n">cats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="o">.</span><span class="n">categories</span><span class="p">(</span><span class="n">input_dshape</span><span class="p">)</span>
+        <span class="n">red_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="o">.</span><span class="n">out_dshape</span><span class="p">(</span><span class="n">input_dshape</span><span class="p">,</span> <span class="n">antialias</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dshape</span><span class="p">(</span><span class="n">Record</span><span class="p">([(</span><span class="n">c</span><span class="p">,</span> <span class="n">red_shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cats</span><span class="p">]))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_antialias_requires_2_stages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="o">.</span><span class="n">_antialias_requires_2_stages</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_antialias_stage_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="o">.</span><span class="n">_antialias_stage_2</span><span class="p">(</span><span class="n">self_intersect</span><span class="p">,</span> <span class="n">array_module</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">required_dshape</span><span class="p">):</span>
+        <span class="n">n_cats</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">required_dshape</span><span class="o">.</span><span class="n">measure</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">shape</span><span class="p">,</span> <span class="n">array_module</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="o">.</span><span class="n">_build_create</span><span class="p">(</span>
+            <span class="n">required_dshape</span><span class="p">)(</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="n">n_cats</span><span class="p">,),</span> <span class="n">array_module</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_bases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">bases</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="o">.</span><span class="n">_build_bases</span><span class="p">(</span><span class="n">cuda</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bases</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">bases</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">bases</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">by</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span> <span class="k">for</span> <span class="n">base</span> <span class="ow">in</span> <span class="n">bases</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dshape</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">cuda</span><span class="p">,</span> <span class="n">antialias</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="o">.</span><span class="n">_build_append</span><span class="p">(</span><span class="n">dshape</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">cuda</span><span class="p">,</span> <span class="n">antialias</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dshape</span><span class="p">,</span> <span class="n">antialias</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="o">.</span><span class="n">_build_combine</span><span class="p">(</span><span class="n">dshape</span><span class="p">,</span> <span class="n">antialias</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dshape</span><span class="p">):</span>
+        <span class="n">cats</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="o">.</span><span class="n">categories</span><span class="p">(</span><span class="n">dshape</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="n">bases</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">'dims'</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cat_column</span><span class="p">]</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">'coords'</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">cat_column</span><span class="p">]</span> <span class="o">=</span> <span class="n">cats</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="o">.</span><span class="n">_finalize</span><span class="p">(</span><span class="n">bases</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="n">cuda</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">finalize</span>
+
+<div class="viewcode-block" id="any"><a class="viewcode-back" href="../../api.html#datashader.reductions.any">[docs]</a><span class="k">class</span> <span class="nc">any</span><span class="p">(</span><span class="n">OptionalFieldReduction</span><span class="p">):</span>
+    <span class="sd">"""Whether any elements in ``column`` map to each bin.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str, optional</span>
+<span class="sd">        If provided, any elements in ``column`` that are ``NaN`` are skipped.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">out_dshape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">,</span> <span class="n">antialias</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">dshape</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="k">if</span> <span class="n">antialias</span> <span class="k">else</span> <span class="n">dshape</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">bool_</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_antialias_stage_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">AntialiasCombination</span><span class="o">.</span><span class="n">MAX</span><span class="p">,</span> <span class="n">array_module</span><span class="o">.</span><span class="n">nan</span><span class="p">),)</span>
+
+    <span class="c1"># CPU append functions</span>
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_antialias</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span> <span class="ow">or</span> <span class="n">aa_factor</span> <span class="o">&gt;</span> <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]:</span>
+                <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">aa_factor</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_no_field</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">):</span>
+        <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_no_field_antialias</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span> <span class="ow">or</span> <span class="n">aa_factor</span> <span class="o">&gt;</span> <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]:</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">aa_factor</span>
+
+    <span class="c1"># GPU append functions</span>
+    <span class="n">_append_cuda</span> <span class="o">=</span><span class="n">_append</span>
+    <span class="n">_append_no_field_cuda</span> <span class="o">=</span> <span class="n">_append_no_field</span>
+
+    <span class="k">def</span> <span class="nf">_build_combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dshape</span><span class="p">,</span> <span class="n">antialias</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">antialias</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_combine_antialias</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_combine</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_combine</span><span class="p">(</span><span class="n">aggs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">aggs</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'bool'</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_combine_antialias</span><span class="p">(</span><span class="n">aggs</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">aggs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">aggs</span><span class="p">)):</span>
+            <span class="n">nanmax_in_place</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">aggs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+
+<span class="k">class</span> <span class="nc">_upsample</span><span class="p">(</span><span class="n">Reduction</span><span class="p">):</span>
+    <span class="sd">""""Special internal class used for upsampling"""</span>
+    <span class="k">def</span> <span class="nf">out_dshape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">,</span> <span class="n">antialias</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">dshape</span><span class="p">(</span><span class="n">Option</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_finalize</span><span class="p">(</span><span class="n">bases</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">bases</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">extract</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">),)</span>
+
+    <span class="k">def</span> <span class="nf">_build_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">required_dshape</span><span class="p">):</span>
+        <span class="c1"># Use uninitialized memory, the upsample function must explicitly set unused</span>
+        <span class="c1"># values to nan</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_float64_empty</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="c1"># not called, the upsample function must set agg directly</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_cuda</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="c1"># not called, the upsample function must set agg directly</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_combine</span><span class="p">(</span><span class="n">aggs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">aggs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">FloatingReduction</span><span class="p">(</span><span class="n">Reduction</span><span class="p">):</span>
+    <span class="sd">"""Base classes for reductions that always have floating-point dtype."""</span>
+    <span class="k">def</span> <span class="nf">out_dshape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">,</span> <span class="n">antialias</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">dshape</span><span class="p">(</span><span class="n">Option</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_finalize</span><span class="p">(</span><span class="n">bases</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">bases</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">_sum_zero</span><span class="p">(</span><span class="n">FloatingReduction</span><span class="p">):</span>
+    <span class="sd">"""Sum of all elements in ``column``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str</span>
+<span class="sd">        Name of the column to aggregate over. Column data type must be numeric.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">_antialias_stage_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">self_intersect</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">((</span><span class="n">AntialiasCombination</span><span class="o">.</span><span class="n">SUM_1AGG</span><span class="p">,</span> <span class="mi">0</span><span class="p">),)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">((</span><span class="n">AntialiasCombination</span><span class="o">.</span><span class="n">SUM_2AGG</span><span class="p">,</span> <span class="mi">0</span><span class="p">),)</span>
+
+    <span class="k">def</span> <span class="nf">_build_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">required_dshape</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_float64_zero</span>
+
+    <span class="c1"># CPU append functions.</span>
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+            <span class="c1"># agg[y, x] cannot be null as initialised to zero.</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">+=</span> <span class="n">field</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_antialias</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">field</span><span class="o">*</span><span class="n">aa_factor</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="c1"># agg[y, x] cannot be null as initialised to zero.</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">+=</span> <span class="n">value</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_antialias_not_self_intersect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">field</span><span class="o">*</span><span class="n">aa_factor</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]:</span>
+            <span class="c1"># agg[y, x] cannot be null as initialised to zero.</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1"># GPU append functions</span>
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_cuda</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+            <span class="n">nb_cuda</span><span class="o">.</span><span class="n">atomic</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">field</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_combine</span><span class="p">(</span><span class="n">aggs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">aggs</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'f8'</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">SelfIntersectingFloatingReduction</span><span class="p">(</span><span class="n">FloatingReduction</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Base class fo floating reductions for which self-intersecting geometry</span>
+<span class="sd">    may or may not be desireable.</span>
+<span class="sd">    Ignored if not using antialiasing.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">self_intersect</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">self_intersect</span> <span class="o">=</span> <span class="n">self_intersect</span>
+
+    <span class="k">def</span> <span class="nf">_antialias_requires_2_stages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">self_intersect</span>
+
+    <span class="k">def</span> <span class="nf">_build_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dshape</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">cuda</span><span class="p">,</span> <span class="n">antialias</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">antialias</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">self_intersect</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"SelfIntersectingOptionalFieldReduction"</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_no_field_antialias_not_self_intersect</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_append_antialias_not_self_intersect</span>
+
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_build_append</span><span class="p">(</span><span class="n">dshape</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">cuda</span><span class="p">,</span> <span class="n">antialias</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_hashable_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Reductions with different self_intersect attributes much have different hashes otherwise</span>
+        <span class="c1"># toolz.memoize will treat them as the same to give incorrect results.</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_hashable_inputs</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">self_intersect</span><span class="p">,)</span>
+
+
+<div class="viewcode-block" id="sum"><a class="viewcode-back" href="../../api.html#datashader.reductions.sum">[docs]</a><span class="k">class</span> <span class="nc">sum</span><span class="p">(</span><span class="n">SelfIntersectingFloatingReduction</span><span class="p">):</span>
+    <span class="sd">"""Sum of all elements in ``column``.</span>
+
+<span class="sd">    Elements of resulting aggregate are nan if they are not updated.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str</span>
+<span class="sd">        Name of the column to aggregate over. Column data type must be numeric.</span>
+<span class="sd">        ``NaN`` values in the column are skipped.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">_antialias_stage_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">self_intersect</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">((</span><span class="n">AntialiasCombination</span><span class="o">.</span><span class="n">SUM_1AGG</span><span class="p">,</span> <span class="n">array_module</span><span class="o">.</span><span class="n">nan</span><span class="p">),)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">((</span><span class="n">AntialiasCombination</span><span class="o">.</span><span class="n">SUM_2AGG</span><span class="p">,</span> <span class="n">array_module</span><span class="o">.</span><span class="n">nan</span><span class="p">),)</span>
+
+    <span class="k">def</span> <span class="nf">_build_bases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">_sum_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">),</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="p">,)</span>
+
+    <span class="c1"># CPU append functions</span>
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]):</span>
+                <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">+=</span> <span class="n">field</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_antialias</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">field</span><span class="o">*</span><span class="n">aa_factor</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]):</span>
+                <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">+=</span> <span class="n">value</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_antialias_not_self_intersect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">field</span><span class="o">*</span><span class="n">aa_factor</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]:</span>
+                <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_combine</span><span class="p">(</span><span class="n">aggs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">nansum_missing</span><span class="p">(</span><span class="n">aggs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_finalize</span><span class="p">(</span><span class="n">bases</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+            <span class="n">sums</span><span class="p">,</span> <span class="n">anys</span> <span class="o">=</span> <span class="n">bases</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">anys</span><span class="p">,</span> <span class="n">sums</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">bases</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="m2"><a class="viewcode-back" href="../../api.html#datashader.reductions.m2">[docs]</a><span class="k">class</span> <span class="nc">m2</span><span class="p">(</span><span class="n">FloatingReduction</span><span class="p">):</span>
+    <span class="sd">"""Sum of square differences from the mean of all elements in ``column``.</span>
+
+<span class="sd">    Intermediate value for computing ``var`` and ``std``, not intended to be</span>
+<span class="sd">    used on its own.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str</span>
+<span class="sd">        Name of the column to aggregate over. Column data type must be numeric.</span>
+<span class="sd">        ``NaN`` values in the column are skipped.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">_build_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dshape</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">cuda</span><span class="p">,</span> <span class="n">antialias</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"""</span><span class="se">\</span>
+<span class="s2">The 'std' and 'var' reduction operations are not yet supported on the GPU"""</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_build_append</span><span class="p">(</span><span class="n">dshape</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">cuda</span><span class="p">,</span> <span class="n">antialias</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">required_dshape</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_float64_zero</span>
+
+    <span class="k">def</span> <span class="nf">_build_temps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">_sum_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">),</span> <span class="n">count</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="nb">sum</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+        <span class="c1"># sum &amp; count are the results of sum[y, x], count[y, x] before being</span>
+        <span class="c1"># updated by field</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">u1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="nb">sum</span><span class="p">)</span> <span class="o">/</span> <span class="n">count</span>
+                <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="nb">sum</span> <span class="o">+</span> <span class="n">field</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">m2</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">field</span> <span class="o">-</span> <span class="n">u1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">field</span> <span class="o">-</span> <span class="n">u</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_combine</span><span class="p">(</span><span class="n">Ms</span><span class="p">,</span> <span class="n">sums</span><span class="p">,</span> <span class="n">ns</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s1">'ignore'</span><span class="p">,</span> <span class="n">invalid</span><span class="o">=</span><span class="s1">'ignore'</span><span class="p">):</span>
+            <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">sums</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">ns</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">Ms</span> <span class="o">+</span> <span class="n">ns</span><span class="o">*</span><span class="p">(</span><span class="n">sums</span><span class="o">/</span><span class="n">ns</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="min"><a class="viewcode-back" href="../../api.html#datashader.reductions.min">[docs]</a><span class="k">class</span> <span class="nc">min</span><span class="p">(</span><span class="n">FloatingReduction</span><span class="p">):</span>
+    <span class="sd">"""Minimum value of all elements in ``column``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str</span>
+<span class="sd">        Name of the column to aggregate over. Column data type must be numeric.</span>
+<span class="sd">        ``NaN`` values in the column are skipped.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">_antialias_requires_2_stages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">_antialias_stage_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">AntialiasCombination</span><span class="o">.</span><span class="n">MIN</span><span class="p">,</span> <span class="n">array_module</span><span class="o">.</span><span class="n">nan</span><span class="p">),)</span>
+
+    <span class="c1"># CPU append functions</span>
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]):</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span>
+        <span class="k">elif</span> <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">field</span><span class="p">:</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_antialias</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">field</span><span class="o">*</span><span class="n">aa_factor</span>
+        <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]:</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1"># GPU append functions</span>
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_cuda</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="n">cuda_atomic_nanmin</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">field</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_combine</span><span class="p">(</span><span class="n">aggs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">aggs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="max"><a class="viewcode-back" href="../../api.html#datashader.reductions.max">[docs]</a><span class="k">class</span> <span class="nc">max</span><span class="p">(</span><span class="n">FloatingReduction</span><span class="p">):</span>
+    <span class="sd">"""Maximum value of all elements in ``column``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str</span>
+<span class="sd">        Name of the column to aggregate over. Column data type must be numeric.</span>
+<span class="sd">        ``NaN`` values in the column are skipped.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">_antialias_stage_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">AntialiasCombination</span><span class="o">.</span><span class="n">MAX</span><span class="p">,</span> <span class="n">array_module</span><span class="o">.</span><span class="n">nan</span><span class="p">),)</span>
+
+    <span class="c1"># CPU append functions</span>
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]):</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span>
+        <span class="k">elif</span> <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">field</span><span class="p">:</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_antialias</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">field</span><span class="o">*</span><span class="n">aa_factor</span>
+        <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]:</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1"># GPU append functions</span>
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_antialias_cuda</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="n">cuda_atomic_nanmax</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">field</span><span class="o">*</span><span class="n">aa_factor</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_cuda</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="n">cuda_atomic_nanmax</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">field</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_combine</span><span class="p">(</span><span class="n">aggs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">aggs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="count_cat"><a class="viewcode-back" href="../../api.html#datashader.reductions.count_cat">[docs]</a><span class="k">class</span> <span class="nc">count_cat</span><span class="p">(</span><span class="n">by</span><span class="p">):</span>
+    <span class="sd">"""Count of all elements in ``column``, grouped by category.</span>
+<span class="sd">    Alias for `by(...,count())`, for backwards compatibility.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str</span>
+<span class="sd">        Name of the column to aggregate over. Column data type must be</span>
+<span class="sd">        categorical. Resulting aggregate has a outer dimension axis along the</span>
+<span class="sd">        categories present.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">count_cat</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">count</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="mean"><a class="viewcode-back" href="../../api.html#datashader.reductions.mean">[docs]</a><span class="k">class</span> <span class="nc">mean</span><span class="p">(</span><span class="n">Reduction</span><span class="p">):</span>
+    <span class="sd">"""Mean of all elements in ``column``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str</span>
+<span class="sd">        Name of the column to aggregate over. Column data type must be numeric.</span>
+<span class="sd">        ``NaN`` values in the column are skipped.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">_build_bases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">_sum_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">),</span> <span class="n">count</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_finalize</span><span class="p">(</span><span class="n">bases</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">sums</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">bases</span>
+        <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s1">'ignore'</span><span class="p">,</span> <span class="n">invalid</span><span class="o">=</span><span class="s1">'ignore'</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">counts</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sums</span><span class="o">/</span><span class="n">counts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="var"><a class="viewcode-back" href="../../api.html#datashader.reductions.var">[docs]</a><span class="k">class</span> <span class="nc">var</span><span class="p">(</span><span class="n">Reduction</span><span class="p">):</span>
+    <span class="sd">"""Variance of all elements in ``column``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str</span>
+<span class="sd">        Name of the column to aggregate over. Column data type must be numeric.</span>
+<span class="sd">        ``NaN`` values in the column are skipped.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">_build_bases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">_sum_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">),</span> <span class="n">count</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">),</span> <span class="n">m2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_finalize</span><span class="p">(</span><span class="n">bases</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">sums</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">m2s</span> <span class="o">=</span> <span class="n">bases</span>
+        <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s1">'ignore'</span><span class="p">,</span> <span class="n">invalid</span><span class="o">=</span><span class="s1">'ignore'</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">counts</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">m2s</span> <span class="o">/</span> <span class="n">counts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="std"><a class="viewcode-back" href="../../api.html#datashader.reductions.std">[docs]</a><span class="k">class</span> <span class="nc">std</span><span class="p">(</span><span class="n">Reduction</span><span class="p">):</span>
+    <span class="sd">"""Standard Deviation of all elements in ``column``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str</span>
+<span class="sd">        Name of the column to aggregate over. Column data type must be numeric.</span>
+<span class="sd">        ``NaN`` values in the column are skipped.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">_build_bases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">_sum_zero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">),</span> <span class="n">count</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">),</span> <span class="n">m2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_finalize</span><span class="p">(</span><span class="n">bases</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">sums</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">m2s</span> <span class="o">=</span> <span class="n">bases</span>
+        <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s1">'ignore'</span><span class="p">,</span> <span class="n">invalid</span><span class="o">=</span><span class="s1">'ignore'</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">counts</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">m2s</span> <span class="o">/</span> <span class="n">counts</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="first"><a class="viewcode-back" href="../../api.html#datashader.reductions.first">[docs]</a><span class="k">class</span> <span class="nc">first</span><span class="p">(</span><span class="n">Reduction</span><span class="p">):</span>
+    <span class="sd">"""First value encountered in ``column``.</span>
+
+<span class="sd">    Useful for categorical data where an actual value must always be returned,</span>
+<span class="sd">    not an average or other numerical calculation.</span>
+
+<span class="sd">    Currently only supported for rasters, externally to this class.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str</span>
+<span class="sd">        Name of the column to aggregate over. If the data type is floating point,</span>
+<span class="sd">        ``NaN`` values in the column are skipped.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">out_dshape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">,</span> <span class="n">antialias</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">dshape</span><span class="p">(</span><span class="n">Option</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_antialias_requires_2_stages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">_antialias_stage_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">AntialiasCombination</span><span class="o">.</span><span class="n">FIRST</span><span class="p">,</span> <span class="n">array_module</span><span class="o">.</span><span class="n">nan</span><span class="p">),)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="ow">and</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]):</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_antialias</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">field</span><span class="o">*</span><span class="n">aa_factor</span>
+        <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]:</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_combine</span><span class="p">(</span><span class="n">aggs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"first is not implemented for dask DataFrames"</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_finalize</span><span class="p">(</span><span class="n">bases</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">bases</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="last"><a class="viewcode-back" href="../../api.html#datashader.reductions.last">[docs]</a><span class="k">class</span> <span class="nc">last</span><span class="p">(</span><span class="n">Reduction</span><span class="p">):</span>
+    <span class="sd">"""Last value encountered in ``column``.</span>
+
+<span class="sd">    Useful for categorical data where an actual value must always be returned,</span>
+<span class="sd">    not an average or other numerical calculation.</span>
+
+<span class="sd">    Currently only supported for rasters, externally to this class.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str</span>
+<span class="sd">        Name of the column to aggregate over. If the data type is floating point,</span>
+<span class="sd">        ``NaN`` values in the column are skipped.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">out_dshape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">,</span> <span class="n">antialias</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">dshape</span><span class="p">(</span><span class="n">Option</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_antialias_requires_2_stages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">_antialias_stage_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">self_intersect</span><span class="p">,</span> <span class="n">array_module</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">AntialiasCombination</span><span class="o">.</span><span class="n">LAST</span><span class="p">,</span> <span class="n">array_module</span><span class="o">.</span><span class="n">nan</span><span class="p">),)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isnull</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@ngjit</span>
+    <span class="k">def</span> <span class="nf">_append_antialias</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">aa_factor</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">field</span><span class="o">*</span><span class="n">aa_factor</span>
+        <span class="k">if</span> <span class="n">isnull</span><span class="p">(</span><span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]:</span>
+            <span class="n">agg</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_combine</span><span class="p">(</span><span class="n">aggs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"last is not implemented for dask DataFrames"</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_finalize</span><span class="p">(</span><span class="n">bases</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">bases</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="mode"><a class="viewcode-back" href="../../api.html#datashader.reductions.mode">[docs]</a><span class="k">class</span> <span class="nc">mode</span><span class="p">(</span><span class="n">Reduction</span><span class="p">):</span>
+    <span class="sd">"""Mode (most common value) of all the values encountered in ``column``.</span>
+
+<span class="sd">    Useful for categorical data where an actual value must always be returned,</span>
+<span class="sd">    not an average or other numerical calculation.</span>
+
+<span class="sd">    Currently only supported for rasters, externally to this class.</span>
+<span class="sd">    Implementing it for other glyph types would be difficult due to potentially</span>
+<span class="sd">    unbounded data storage requirements to store indefinite point or line</span>
+<span class="sd">    data per pixel.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str</span>
+<span class="sd">        Name of the column to aggregate over. If the data type is floating point,</span>
+<span class="sd">        ``NaN`` values in the column are skipped.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="nf">out_dshape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dshape</span><span class="p">,</span> <span class="n">antialias</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">dshape</span><span class="p">(</span><span class="n">Option</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">agg</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"mode is currently implemented only for rasters"</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_combine</span><span class="p">(</span><span class="n">aggs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"mode is currently implemented only for rasters"</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_finalize</span><span class="p">(</span><span class="n">bases</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"mode is currently implemented only for rasters"</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="summary"><a class="viewcode-back" href="../../api.html#datashader.reductions.summary">[docs]</a><span class="k">class</span> <span class="nc">summary</span><span class="p">(</span><span class="n">Expr</span><span class="p">):</span>
+    <span class="sd">"""A collection of named reductions.</span>
+
+<span class="sd">    Computes all aggregates simultaneously, output is stored as a</span>
+<span class="sd">    ``xarray.Dataset``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    A reduction for computing the mean of column "a", and the sum of column "b"</span>
+<span class="sd">    for each bin, all in a single pass.</span>
+
+<span class="sd">    &gt;&gt;&gt; import datashader as ds</span>
+<span class="sd">    &gt;&gt;&gt; red = ds.summary(mean_a=ds.mean('a'), sum_b=ds.sum('b'))</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    A single pass of the source dataset using antialiased lines can either be</span>
+<span class="sd">    performed using a single-stage aggregation (e.g. ``self_intersect=True``)</span>
+<span class="sd">    or two stages (``self_intersect=False``). If a ``summary`` contains a</span>
+<span class="sd">    ``count`` or ``sum`` reduction with ``self_intersect=False``, or any of</span>
+<span class="sd">    ``first``, ``last`` or ``min``, then the antialiased line pass will be</span>
+<span class="sd">    performed in two stages.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">ks</span><span class="p">,</span> <span class="n">vs</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="o">=</span> <span class="n">ks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">vs</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dshape</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+            <span class="n">v</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">input_dshape</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">concat</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">inputs</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)))</span></div>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">_k</span> <span class="k">for</span> <span class="n">_k</span><span class="p">,</span><span class="n">_v</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_v</span><span class="p">,</span><span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">issubclass</span><span class="p">(</span><span class="n">_v</span><span class="p">,</span><span class="n">Reduction</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_v</span> <span class="ow">is</span> <span class="n">summary</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="n">_v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Reduction</span><span class="p">,</span> <span class="n">OptionalFieldReduction</span><span class="p">,</span>
+                                   <span class="n">FloatingReduction</span><span class="p">,</span> <span class="n">m2</span><span class="p">]]))</span> <span class="o">+</span> \
+                    <span class="p">[</span><span class="s1">'category_modulo'</span><span class="p">,</span> <span class="s1">'category_binning'</span><span class="p">]</span>
+</pre></div>
+</div>
+<!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+</main>
+</div>
+</div>
+<!-- Scripts loaded after <body> so the DOM is not blocked -->
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+<div class="container">
+<div class="footer-item">
+<p class="nbsite-copyright-last-updated">
+<span class="copyright">
+            © Copyright 2016-2022 Holoviz contributors.
+    </span>
+<span class="last-updated">Last updated on 2022-11-22.</span><br/>
+</p>
+</div>
+</div>
+</footer>
+</body>
+</html>
